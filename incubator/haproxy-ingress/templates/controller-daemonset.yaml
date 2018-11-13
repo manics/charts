@@ -84,3 +84,10 @@ spec:
                   fieldPath: metadata.namespace
           resources:
 {{ toYaml .Values.controller.resources | indent 12 }}
+      {{- if .Values.log.enabled }}
+        - name: log
+          image: "{{ .Values.log.image.repository }}:{{ .Values.log.image.tag }}"
+          imagePullPolicy: {{ .Values.log.image.pullPolicy }}
+          resources:
+{{ toYaml .Values.log.resources | indent 12 }}
+      {{- end }}

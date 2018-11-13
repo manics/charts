@@ -81,6 +81,14 @@ controller:
 
   resources: {}
 
+log:
+  enabled: false
+  image:
+    repository: manics/rsyslog-stdout
+    tag: 0.1.0
+    pullPolicy: IfNotPresent
+  resources: {}
+
 # TCP service key:value pairs
 # <port>: <namespace>/<servicename>:<portnumber>[:[<in-proxy>][:<out-proxy>]]
 # https://github.com/jcmoraisjr/haproxy-ingress/tree/v0.6#tcp-services-configmap
