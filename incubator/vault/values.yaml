@@ -165,3 +165,22 @@ vault:
       #   bucket: ""
       #   # Use a custom secret to mount this file.
       #   credentials_file: ""
+      #
+      # # You must configure fileStorage below to provide a persistent volume
+      # # for the Vault filesystem backend
+      # file:
+      #   path: /vault/file/
+
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ##
+  fileStorage:
+    enabled: false
+    mountPath: /vault/file/
+    # storageClassName: default
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+    annotations: {}
+    subPath: ""
+    existingClaim:

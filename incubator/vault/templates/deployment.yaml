@@ -76,6 +76,11 @@ spec:
           mountPath: /vault/config/
         - name: vault-root
           mountPath: /root/
+        {{- if .Values.vault.fileStorage.enabled }}
+        - name: vault-storage
+          mountPath: {{ .Values.vault.fileStorage.mountPath }}
+          subPath: {{ .Values.vault.fileStorage.subPath }}
+        {{- end }}
         {{- range .Values.vault.customSecrets }}
         - name: {{ .secretName | replace "." "-"}}
           mountPath: {{ .mountPath }}
@@ -125,6 +130,11 @@ spec:
             name: "{{ template "vault.fullname" . }}-config"
         - name: vault-root
           emptyDir: {}
+        {{- if .Values.vault.fileStorage.enabled }}
+        - name: vault-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.vault.fileStorage.existingClaim | default (include "vault.fullname" .) }}
+        {{- end -}}
         {{- range .Values.vault.customSecrets }}
         - name: {{ .secretName | replace "." "-"}}
           secret:

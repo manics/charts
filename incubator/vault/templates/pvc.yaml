@@ -1,0 +1,24 @@
+{{- if and .Values.vault.fileStorage.enabled (not .Values.vault.fileStorage.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "vault.fullname" . }}
+  labels:
+    app: {{ template "vault.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  {{- with .Values.vault.fileStorage.annotations  }}
+  annotations:
+{{ toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- range .Values.vault.fileStorage.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.vault.fileStorage.size | quote }}
+  storageClassName: {{ .Values.vault.fileStorage.storageClassName }}
+{{- end -}}
